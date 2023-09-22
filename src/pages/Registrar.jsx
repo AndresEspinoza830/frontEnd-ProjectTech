@@ -36,14 +36,28 @@ const Registrar = () => {
     setAlerta({});
 
     try {
-      const res = await axios.post("localhost:5006/auth/registro", {
-        username,
-        password,
-        email,
-      });
-      console.log(res);
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/auth/registro`,
+        {
+          username,
+          password,
+          email,
+        }
+      );
+
+      //Si se creo con exito el usuario
+      setAlerta({ msg: data.mensaje, error: false });
+
+      //Buena practica limpiar states luego de su uso
+      setUsername("");
+      setEmail("");
+      setPassword("");
+      setRepetirPassword("");
     } catch (error) {
       console.log(error);
+      if (error.response) {
+        return setAlerta({ msg: error.response.data.mensaje, error: true });
+      }
     }
   };
 
