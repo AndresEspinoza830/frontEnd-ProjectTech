@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import Alerta from "../components/Alerta";
+import clienteAxios from "../config/clienteAxios";
 
 const Registrar = () => {
   const [username, setUsername] = useState("");
@@ -36,14 +36,11 @@ const Registrar = () => {
     setAlerta({});
 
     try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/auth/registro`,
-        {
-          username,
-          password,
-          email,
-        }
-      );
+      const { data } = await clienteAxios.post("/registro", {
+        username,
+        password,
+        email,
+      });
 
       //Si se creo con exito el usuario
       setAlerta({ msg: data.mensaje, error: false });
@@ -58,6 +55,9 @@ const Registrar = () => {
       if (error.response) {
         return setAlerta({ msg: error.response.data.mensaje, error: true });
       }
+      if (error.response.data[0].msg) {
+        return setAlerta({ msg: error.response.data[0].msg, error: true });
+      }
     }
   };
 
@@ -66,7 +66,7 @@ const Registrar = () => {
   return (
     <>
       <h1 className=" font-black text-5xl capitalize text-center">
-        Crea tu cuenta en <span className="text-indigo-700">ProjectTech</span>{" "}
+        Crea tu cuenta en <span className="text-[#0e59f2]">ProjectTech</span>{" "}
       </h1>
 
       {msg && <Alerta alerta={alerta} />}
@@ -78,7 +78,7 @@ const Registrar = () => {
         <div className="my-5">
           <label
             htmlFor="username"
-            className="uppercase text-gray-600 block text-base font-bold"
+            className="uppercase text-gray-600 block text-sm font-bold"
           >
             Username
           </label>
@@ -94,7 +94,7 @@ const Registrar = () => {
         <div className="my-5">
           <label
             htmlFor="email"
-            className="uppercase text-gray-600 block text-base font-bold"
+            className="uppercase text-gray-600 block text-sm font-bold"
           >
             Email
           </label>
@@ -110,7 +110,7 @@ const Registrar = () => {
         <div className="my-5">
           <label
             htmlFor="password"
-            className="uppercase text-gray-600 block text-base font-bold"
+            className="uppercase text-gray-600 block text-sm font-bold"
           >
             Password
           </label>
@@ -126,7 +126,7 @@ const Registrar = () => {
         <div className="mt-5">
           <label
             htmlFor="repetir-password"
-            className="uppercase text-gray-600 block text-base font-bold"
+            className="uppercase text-gray-600 block text-sm font-bold"
           >
             Repetir Password
           </label>
@@ -142,10 +142,10 @@ const Registrar = () => {
         <nav className="lg:flex lg:justify-between">
           <Link
             className="block text-center my-5 text-slate-500  text-sm"
-            to={"/"}
+            to={"/login"}
           >
             ¿Ya tienes una cuenta?{" "}
-            <span className="text-indigo-700 font-bold">Inicia Sesion</span>
+            <span className="text-[#0e59f2] font-bold">Inicia Sesion</span>
           </Link>
           <Link
             className="block text-center my-5 text-slate-500  text-sm"
@@ -158,7 +158,7 @@ const Registrar = () => {
           type="submit"
           value="Crear Cuenta"
           className={
-            "w-full bg-indigo-700 mb-5 disabled:cursor-not-allowed text-white py-3 rounded-md uppercase font-bold cursor-pointer hover:bg-indigo-800 transition-colors duration-300"
+            "w-full bg-[#0e59f2] mb-5 disabled:cursor-not-allowed text-white py-3 rounded-md uppercase font-bold cursor-pointer hover:bg-indigo-800 transition-colors duration-300"
           }
         />
       </form>

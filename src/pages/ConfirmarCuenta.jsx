@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import axios from "axios";
 import Alerta from "../components/Alerta";
+import clienteAxios from "../config/clienteAxios";
 
 const ConfirmarCuenta = () => {
   const { token } = useParams(); //tomamos el token de la url
@@ -12,9 +12,7 @@ const ConfirmarCuenta = () => {
   useEffect(() => {
     const confirmarCuenta = async () => {
       try {
-        const { data } = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/auth/confirmar/${token}`
-        );
+        const { data } = await clienteAxios.get(`/confirmar/${token}`);
         setAlerta({ msg: data.mensaje, error: false });
         setCuentaConfirmada(true);
       } catch (error) {
@@ -36,7 +34,7 @@ const ConfirmarCuenta = () => {
         {cuentaConfirmada && (
           <Link
             className="block text-center my-5 text-slate-500  text-sm"
-            to={"/"}
+            to={"/login"}
           >
             <span className="text-indigo-700 font-bold">Inicia Sesión</span>
           </Link>
