@@ -1,5 +1,5 @@
-import { Link, useNavigate } from "react-router-dom";
 import Destacados from "../components/Destacados";
+import Nosotros from "../components/Nosotros";
 import Testimonios from "../components/Testimonios";
 import Equipo from "../components/Equipo";
 import Footer from "../components/Footer";
@@ -8,8 +8,6 @@ import Header from "../components/Header";
 import Banner from "../components/Banner";
 
 const Home = () => {
-  const navigate = useNavigate();
-
   return (
     // bg-gradient-to-tl from-indigo-200  to-white
     <div className="bg-white">
@@ -19,6 +17,7 @@ const Home = () => {
         <Banner />
       </div>
       <Destacados />
+      <Nosotros />
       <Testimonios />
       <Equipo />
       <Footer />

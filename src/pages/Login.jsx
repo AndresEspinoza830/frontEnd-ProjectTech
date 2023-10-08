@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Alerta from "../components/Alerta";
 import clienteAxios from "../config/clienteAxios";
+import AuthContext from "../hooks/useContext";
 
 const Login = () => {
   const [user, setUser] = useState({
@@ -9,6 +10,9 @@ const Login = () => {
     password: "",
   });
   const [alerta, setAlerta] = useState({});
+
+  //Atrpamos al usuairo en el context
+  const { usuario, setUsuario } = useContext(AuthContext);
 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -41,10 +45,18 @@ const Login = () => {
     try {
       const { data } = await clienteAxios.post("/login", user);
       console.log(data);
+
       //Limpiar States
       setUser({
         email: "",
         password: "",
+      });
+
+      //Almacenar usuario en el context
+      setUsuario({
+        auth: true,
+        id: data.id,
+        username: data.username,
       });
 
       return navigate("/home");

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import productoAxios from "../config/productoAxios";
+import Destacado from "./Destacado";
 
 const Destacados = () => {
   const [productos, setProductos] = useState([]);
@@ -9,7 +10,9 @@ const Destacados = () => {
   useEffect(() => {
     const consultarApi = async () => {
       try {
-        const { data } = await productoAxios.get("/listar?destacado=true");
+        const { data } = await productoAxios.get(
+          "/listar-destacados?destacado=true&limit=4"
+        );
         setProductos(data);
       } catch (error) {
         console.log(error);
@@ -41,21 +44,7 @@ const Destacados = () => {
         </div>
         <div className="flex items-center justify-between mb-10">
           {productos &&
-            productos.map((ser) => (
-              <div
-                key={ser._id}
-                className="border-[1px] basis-1/5 h-[340px] rounded-xl p-10 space-y-12 shadow-lg hover:shadow-2xl hover:shadow-indigo-300 hover:scale-105 hover:text-primary transition-transform transition-none duration-300"
-              >
-                <div className="w-[70px] h-[80px] bg-primary"></div>
-                <div className="space-y-5">
-                  <h4 className="transition-colors duration-200">
-                    {ser.nombre}
-                  </h4>
-                  <p>{ser.descripcion}</p>
-                  <IoIosArrowDown />
-                </div>
-              </div>
-            ))}
+            productos.map((ser) => <Destacado ser={ser} key={ser._id} />)}
         </div>
         <div className="w-full flex items-center justify-center">
           <button
