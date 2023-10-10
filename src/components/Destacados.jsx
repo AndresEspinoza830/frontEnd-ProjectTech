@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
-import productoAxios from "../config/productoAxios";
+import { IoIosArrowForward } from "react-icons/io";
 import Destacado from "./Destacado";
+import productoAxios from "../config/productoAxios";
+import destacado1 from "../../public/destacado1.png";
+import destacado2 from "../../public/destacado2.png";
+import destacado3 from "../../public/destacado3.png";
+import destacado4 from "../../public/destacado4.png";
 
 const Destacados = () => {
   const [productos, setProductos] = useState([]);
@@ -20,10 +24,6 @@ const Destacados = () => {
     };
     consultarApi();
   }, []);
-
-  useEffect(() => {
-    console.log(productos);
-  }, [productos]);
 
   const navigate = useNavigate();
 
@@ -44,7 +44,9 @@ const Destacados = () => {
         </div>
         <div className="flex items-center justify-between mb-10">
           {productos &&
-            productos.map((ser) => <Destacado ser={ser} key={ser._id} />)}
+            productos.map((ser, index) => (
+              <Destacado ser={ser} index={index} key={ser._id} />
+            ))}
         </div>
         <div className="w-full flex items-center justify-center">
           <button

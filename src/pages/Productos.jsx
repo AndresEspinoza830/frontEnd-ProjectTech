@@ -115,41 +115,48 @@ const Productos = () => {
         </aside>
         <main className="w-full basis-8/12  space-y-5">
           <BuscadorProducto setBuscar={setBuscar} buscar={buscar} />
-          {productosPaginaActual &&
+          {totalPaginas === 0 ? (
+            <h2>Lo sentimos, no hemos encontrado resultados.</h2>
+          ) : (
+            productosPaginaActual &&
             productosPaginaActual.map((producto) => (
               <Producto producto={producto} key={producto._id} />
-            ))}
-          <div className="flex items-center justify-center space-x-4 ">
-            <MdArrowBackIosNew
-              onClick={() => cambiarPagina(paginaActual - 1)}
-              // Verifica si la página actual es la primera
-              disabled={paginaActual === 1}
-              className={`cursor-pointer w-3 hover:w-4 duration-300 ${
-                paginaActual === 1 ? "text-gray-400" : "" // Cambia el color o estilo cuando está deshabilitado
-              }`}
-            >
-              Anterior
-            </MdArrowBackIosNew>
-            <span>
-              Página {paginaActual} de {totalPaginas}
-            </span>
-            <MdArrowForwardIos
-              onClick={() => cambiarPagina(paginaActual + 1)}
-              // Verifica si la página actual es la última
-              disabled={
-                paginaActual ===
-                Math.ceil(productos.length / productosPorPagina)
-              }
-              className={`cursor-pointer w-3 hover:w-4 duration-300 ${
-                paginaActual ===
-                Math.ceil(productos.length / productosPorPagina)
-                  ? "text-gray-400" // Cambia el color o estilo cuando está deshabilitado
-                  : ""
-              }`}
-            >
-              Siguiente
-            </MdArrowForwardIos>
-          </div>
+            ))
+          )}
+
+          {totalPaginas !== 0 && (
+            <div className="flex items-center justify-center space-x-4 ">
+              <MdArrowBackIosNew
+                onClick={() => cambiarPagina(paginaActual - 1)}
+                // Verifica si la página actual es la primera
+                disabled={paginaActual === 1}
+                className={`cursor-pointer w-3 hover:w-4 duration-300 ${
+                  paginaActual === 1 ? "text-gray-400" : "" // Cambia el color o estilo cuando está deshabilitado
+                }`}
+              >
+                Anterior
+              </MdArrowBackIosNew>
+              <span>
+                Página {paginaActual} de {totalPaginas}
+              </span>
+              <MdArrowForwardIos
+                onClick={() => cambiarPagina(paginaActual + 1)}
+                // Verifica si la página actual es la última
+                disabled={
+                  paginaActual ===
+                  Math.ceil(productos.length / productosPorPagina)
+                }
+                className={`cursor-pointer w-3 hover:w-4 duration-300 ${
+                  paginaActual ===
+                  Math.ceil(productos.length / productosPorPagina)
+                    ? "text-gray-400" // Cambia el color o estilo cuando está deshabilitado
+                    : ""
+                }`}
+              >
+                Siguiente
+              </MdArrowForwardIos>
+            </div>
+          )}
         </main>
       </section>
       <Footer />

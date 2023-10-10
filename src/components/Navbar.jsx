@@ -43,12 +43,11 @@ const Navbar = () => {
   };
 
   return (
-    <div className="max-w-[1240px] mx-auto py-10">
+    <div className="max-w-[1240px] mx-auto py-10 ">
       <div className="w-full h-full flex items-center justify-between ">
         <Link to={"/home"}>
           <img src="/tronix-logo.svg" alt="Logo" className="w-[150px] " />
         </Link>
-
         <nav>
           <ul className="flex space-x-12 font-semibold text-base text-black ">
             <Link

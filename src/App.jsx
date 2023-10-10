@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import Productos from "./pages/Productos";
 import { AuthProvider } from "./hooks/useContext";
 import ProductoId from "./pages/ProductoId";
+import ProductDisplay from "./pages/ProductDisplay ";
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/home" element={<Home />} />
           <Route path="/productos" element={<Productos />} />
           <Route path="/productos/:idProducto" element={<ProductoId />} />
+          <Route path="/paypal" element={<ProductDisplay />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

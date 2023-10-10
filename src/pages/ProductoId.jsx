@@ -1,52 +1,17 @@
-import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import {
-  Page,
-  Text,
-  View,
-  Document,
-  StyleSheet,
-  PDFViewer,
-} from "@react-pdf/renderer";
+import { Link, useFetcher, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+
 import productoAxios from "../config/productoAxios";
-import fs from "fs"; // Importa la biblioteca 'fs' para trabajar con el sistema de archivos
-
-const styles = StyleSheet.create({
-  page: {
-    flexDirection: "row",
-    backgroundColor: "#E4E4E4",
-  },
-  section: {
-    margin: 10,
-    padding: 10,
-    flexGrow: 1,
-  },
-});
-
-const productos = [
-  { id: 1, nombre: "Producto 1" },
-  { id: 2, nombre: "Producto 2" },
-  { id: 3, nombre: "Producto 3" },
-  { id: 4, nombre: "Producto 4" },
-  { id: 5, nombre: "Producto 5" },
-  { id: 6, nombre: "Producto 6" },
-  { id: 7, nombre: "Producto 7" },
-  { id: 8, nombre: "Producto 8" },
-  { id: 9, nombre: "Producto 9" },
-  { id: 10, nombre: "Producto 10" },
-  { id: 11, nombre: "Producto 11" },
-  { id: 12, nombre: "Producto 12" },
-  { id: 13, nombre: "Producto 13" },
-  { id: 14, nombre: "Producto 14" },
-  { id: 15, nombre: "Producto 15" },
-];
-
-const productosPorPagina = 5; // Número de productos por página
+import Header from "../components/Header";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const ProductoId = () => {
   const [producto, setProducto] = useState({});
+  console.log(producto);
 
   const { idProducto } = useParams();
+  console.log(idProducto);
 
   useEffect(() => {
     const consultarProducto = async () => {
@@ -60,63 +25,53 @@ const ProductoId = () => {
     consultarProducto();
   }, []);
 
-  const [paginaActual, setPaginaActual] = useState(1);
-
-  // Calcular el índice inicial y final de los productos para la página actual
-  const indiceInicial = (paginaActual - 1) * productosPorPagina;
-  const indiceFinal = paginaActual * productosPorPagina;
-
-  // Filtrar la lista de productos para mostrar solo los de la página actual
-  const productosPaginaActual = productos.slice(indiceInicial, indiceFinal);
-
-  // Función para cambiar de página
-  const cambiarPagina = (nuevaPagina) => {
-    setPaginaActual(nuevaPagina);
-  };
+  useEffect(() => {
+    console.log(producto);
+  }, [producto]);
 
   return (
-    <>
-      <PDFViewer>
-        <Document>
-          <Page size="A4" style={styles.page}>
-            <View style={styles.section}>
-              <Text>Section #1</Text>
-            </View>
-            <View style={styles.section}>
-              <Text>Section #2</Text>
-            </View>
-          </Page>
-        </Document>
-      </PDFViewer>
-      <div>
-        <h2>{producto.nombre}</h2>
-        <h2>{producto._id}</h2>
+    <div className="bg-white">
+      <Header />
+      <Navbar />
+      <div className="w-full h-screen">
+        <div className="max-w-[1240px] mx-auto flex space-x-4">
+          <embed
+            src={import.meta.env.BASE_URL + "pdf/backup2.pdf"}
+            className="w-8/12 h-[900px]"
+            type="application/pdf"
+            width="100%"
+          />
+          <aside className="w-4/12 flex flex-col justify-around">
+            <div>
+              <h6 className="font-semibold text-3xl">{producto?.nombre}</h6>
+              <h2 className="font-medium text-lg">
+                Categoria: {producto?.categoria?.descripcion}
+              </h2>
+              <p className="leading-5 text-sm">{producto?.descripcion}</p>
+              <p>Precio: ${producto?.precio}</p>
+            </div>
+
+            <div className="border-[1px] shadow-xl rounded-xl p-2 py-12 space-y-10">
+              <div className="flex items-center justify-center">
+                <img src="/tronix-logo.svg" alt="" />
+              </div>
+              <div className="space-y-10">
+                <h3 className="text-2xl font-light text-center">
+                  Esta leyendo una <br /> previsualizacion
+                </h3>
+                <div className="flex justify-center items-center">
+                  <button className="bg-primary text-white px-20 py-2 animate-bounce">
+                    Comprar PDF
+                  </button>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
       </div>
-      <h1>Lista de Productos</h1>
-      <ul>
-        {productosPaginaActual.map((producto) => (
-          <li key={producto.id}>{producto.nombre}</li>
-        ))}
-      </ul>
-      <div>
-        {/* Botones de paginación */}
-        <button
-          onClick={() => cambiarPagina(paginaActual - 1)}
-          disabled={paginaActual === 1}
-        >
-          Anterior
-        </button>
-        <span>Página {paginaActual}</span>
-        <button
-          onClick={() => cambiarPagina(paginaActual + 1)}
-          disabled={
-            paginaActual === Math.ceil(productos.length / productosPorPagina)
-          }
-        >
-          Siguiente
-        </button>
-      </div>
-    </>
+
+      <Footer />
+    </div>
   );
 };
 

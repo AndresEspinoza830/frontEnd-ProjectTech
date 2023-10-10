@@ -1,16 +1,23 @@
 import { Link } from "react-router-dom";
-import { IoIosArrowDown } from "react-icons/io";
+import { BsArrowUpRight } from "react-icons/bs";
 
-const Destacado = ({ ser }) => {
+const Destacado = ({ ser, index }) => {
   return (
     <Link
       to={`/productos/${ser._id}`}
-      className="border-[1px] basis-1/5 h-[340px] cursor-pointer rounded-xl p-10 space-y-12 shadow-lg hover:shadow-2xl hover:shadow-indigo-300 hover:scale-105 hover:text-primary transition-transform transition-none duration-300"
+      className="border-[1px] group basis-1/5 h-[340px] cursor-pointer rounded-xl p-10 space-y-6 shadow-lg hover:shadow-2xl hover:shadow-indigo-300 hover:scale-105 hover:text-primary transition-transform transition-none duration-300 "
     >
-      <div className="w-[70px] h-[80px] bg-primary"></div>
-      <div className="space-y-5">
-        <h4 className="transition-colors duration-200">{ser.nombre}</h4>
-        <IoIosArrowDown />
+      <div className="flex flex-col justify-between h-full">
+        <div className="flex flex-col space-y-5">
+          <div className="flex items-center relative">
+            <img src={`destacado${index + 1}.png`} alt={ser.nombre} />
+          </div>
+          <h4 className=" group-duration-200 font-medium">{ser.nombre}</h4>
+        </div>
+        <BsArrowUpRight
+          className="group-hover:rotate-45 duration-300"
+          style={{ width: "20px", height: "20px" }}
+        />
       </div>
     </Link>
   );

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import productoAxios from "../config/productoAxios";
+import categoriaAxios from "../config/categoriaAxios";
 
 const Categorias = ({ setCategoria, categoria, setRadioValue }) => {
   const [categorias, setCategorias] = useState([]);
@@ -7,7 +7,7 @@ const Categorias = ({ setCategoria, categoria, setRadioValue }) => {
   useEffect(() => {
     const consultarCategorias = async () => {
       try {
-        const { data } = await productoAxios.get("/categorias");
+        const { data } = await categoriaAxios.get("/listar");
         setCategorias(data);
       } catch (error) {
         console.log(error);
