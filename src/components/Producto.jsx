@@ -9,7 +9,11 @@ const Producto = ({ producto }) => {
     >
       <div className="w-[200px]">
         <img
-          src="https://www.unir.net/wp-content/uploads/2020/06/ficha_1920x1080_02-1.png"
+          src={
+            producto?.imagen?.secure_url
+              ? producto?.imagen?.secure_url
+              : "https://www.unir.net/wp-content/uploads/2020/06/ficha_1920x1080_02-1.png"
+          }
           alt={producto.nombre}
           className="group-hover:contrast-50"
         />

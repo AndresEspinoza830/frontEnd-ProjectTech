@@ -12,13 +12,17 @@ const Equipo = () => {
           </h2>
           <h3 className="text-center">Our Top Skilled Experts</h3>
         </div>
-        <div className="flex justify-around">
-          <div className="basis-1/5 ">
+        <div className="flex justify-around group">
+          <div className="basis-1/5 relative ">
             <img
               src="https://wptf.themepul.co/tronix/wp-content/uploads/2023/06/img.jpg"
               alt=""
               className="w-full"
             />
+            {/* <div className="w-[220px] h-[150px] absolute bg-white bottom-[14px] left-[14px] ">
+              <h3 className="text-lg">Ambert Daniel</h3>
+              <p>CEO & Founder</p>
+            </div> */}
           </div>
 
           <div className="basis-1/5">

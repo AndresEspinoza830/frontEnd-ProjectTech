@@ -1,10 +1,12 @@
-import { Link, useFetcher, useParams } from "react-router-dom";
-import React, { useEffect, useState } from "react";
-
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import productoAxios from "../config/productoAxios";
 import Header from "../components/Header";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { Document, Page, pdfjs } from "react-pdf";
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const ProductoId = () => {
   const [producto, setProducto] = useState({});
@@ -25,24 +27,71 @@ const ProductoId = () => {
     consultarProducto();
   }, []);
 
-  useEffect(() => {
-    console.log(producto);
-  }, [producto]);
+  const pdfUrl = "http://localhost:5173/public/pdf/backup2.pdf";
+
+  function onDocumentLoadSuccess({ numPages }) {
+    setNumPages(numPages);
+  }
+  const [numPages, setNumPages] = useState(null);
+  const [pageNumber, setPageNumber] = useState(1);
+
+  function onDocumentLoadSuccess({ numPages }) {
+    setNumPages(numPages);
+  }
+
+  const handleCheckout = async () => {
+    await fetch("http://localhost:8800/api/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(producto),
+    })
+      .then((response) => {
+        console.log(response);
+        return response.json();
+      })
+      .then((response) => {
+        console.log(response.url);
+        if (response.url) {
+          window.location.assign(response.url);
+        }
+      });
+  };
 
   return (
     <div className="bg-white">
       <Header />
       <Navbar />
-      <div className="w-full h-screen">
+      <div className="w-full ">
         <div className="max-w-[1240px] mx-auto flex space-x-4">
-          <embed
-            src={import.meta.env.BASE_URL + "pdf/backup2.pdf"}
-            className="w-8/12 h-[900px]"
-            type="application/pdf"
-            width="100%"
-          />
-          <aside className="w-4/12 flex flex-col justify-around">
-            <div>
+          <div className="w-7/12 mx-auto">
+            <Document
+              file={pdfUrl}
+              onLoadSuccess={onDocumentLoadSuccess}
+              pageMode="useThumbs"
+            >
+              {Array.from({ length: numPages }, (_, index) => (
+                <Page
+                  key={`page_${index + 1}`}
+                  pageNumber={index + 1}
+                  width={722}
+                  debug={true}
+                  className="border-[1px] border-slate-100 mb-2 shadow-md text-center"
+                  renderTextLayer={false}
+                />
+              ))}
+            </Document>
+            <p>
+              Página {pageNumber} de {numPages}
+            </p>
+          </div>
+
+          <aside
+            className="w-4/12 flex flex-col space-y-8 "
+            style={{ position: "sticky", top: 150, height: "100vh" }}
+          >
+            <div className="space-y-3">
               <h6 className="font-semibold text-3xl">{producto?.nombre}</h6>
               <h2 className="font-medium text-lg">
                 Categoria: {producto?.categoria?.descripcion}
@@ -60,7 +109,10 @@ const ProductoId = () => {
                   Esta leyendo una <br /> previsualizacion
                 </h3>
                 <div className="flex justify-center items-center">
-                  <button className="bg-primary text-white px-20 py-2 animate-bounce">
+                  <button
+                    className="bg-primary text-white px-20 py-2 animate-bounce"
+                    onClick={handleCheckout}
+                  >
                     Comprar PDF
                   </button>
                 </div>

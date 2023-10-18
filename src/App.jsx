@@ -10,6 +10,7 @@ import Productos from "./pages/Productos";
 import { AuthProvider } from "./hooks/useContext";
 import ProductoId from "./pages/ProductoId";
 import ProductDisplay from "./pages/ProductDisplay ";
+import Prueba from "./pages/Prueba";
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="/productos" element={<Productos />} />
           <Route path="/productos/:idProducto" element={<ProductoId />} />
           <Route path="/paypal" element={<ProductDisplay />} />
+          <Route path="/prueba" element={<Prueba />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

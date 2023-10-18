@@ -4,6 +4,7 @@ import {
   Elements, //Nos permite usar stripe en componentes(envuelve la raiz)
   useStripe,
   useElements,
+  PaymentElement,
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js"; //Carga el componente de stripe asincrono
 import axios from "axios";
@@ -43,6 +44,7 @@ const CheckoutForm = () => {
       <img src="/vite.svg" alt="" width={100} />
       <h2>Price : $100</h2>
       <CardElement />
+
       <button>Buy</button>
     </form>
   );
