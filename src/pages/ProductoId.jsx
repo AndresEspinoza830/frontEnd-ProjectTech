@@ -1,19 +1,22 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import productoAxios from "../config/productoAxios";
 import Header from "../components/Header";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Document, Page, pdfjs } from "react-pdf";
+import axios from "axios";
+import useAuth from "../hooks/useAuth";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const ProductoId = () => {
   const [producto, setProducto] = useState({});
-  console.log(producto);
 
   const { idProducto } = useParams();
-  console.log(idProducto);
+
+  const { auth } = useAuth();
+  console.log(auth);
 
   useEffect(() => {
     const consultarProducto = async () => {
@@ -27,36 +30,28 @@ const ProductoId = () => {
     consultarProducto();
   }, []);
 
-  const pdfUrl = "http://localhost:5173/public/pdf/backup2.pdf";
+  // const pdfUrl =
+  //   "http://localhost:5173/public/pdf/INSTRUCTIVO DE CONEXIÓN DE IMPRESORAS - BORROSO.pdf";
 
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
   }
   const [numPages, setNumPages] = useState(null);
-  const [pageNumber, setPageNumber] = useState(1);
 
-  function onDocumentLoadSuccess({ numPages }) {
-    setNumPages(numPages);
-  }
+  const redirectCheckout = async () => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/create-checkout-session`,
+        producto
+      );
 
-  const handleCheckout = async () => {
-    await fetch("http://localhost:8800/api/checkout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(producto),
-    })
-      .then((response) => {
-        console.log(response);
-        return response.json();
-      })
-      .then((response) => {
-        console.log(response.url);
-        if (response.url) {
-          window.location.assign(response.url);
-        }
-      });
+      const stripeUrl = data.url;
+
+      // Redirigir a la URL de Stripe en una nueva ventana o pestaña
+      window.location.href = stripeUrl;
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -67,7 +62,11 @@ const ProductoId = () => {
         <div className="max-w-[1240px] mx-auto flex space-x-4">
           <div className="w-7/12 mx-auto">
             <Document
-              file={pdfUrl}
+              file={
+                producto?.precio === 0
+                  ? `http://localhost:8800/${producto?.pdf?.normal}`
+                  : `http://localhost:8800/${producto?.pdf?.blur}`
+              }
               onLoadSuccess={onDocumentLoadSuccess}
               pageMode="useThumbs"
             >
@@ -77,14 +76,11 @@ const ProductoId = () => {
                   pageNumber={index + 1}
                   width={722}
                   debug={true}
-                  className="border-[1px] border-slate-100 mb-2 shadow-md text-center"
+                  className={`border-[1px] border-slate-100 mb-4 shadow-md text-center `}
                   renderTextLayer={false}
                 />
               ))}
             </Document>
-            <p>
-              Página {pageNumber} de {numPages}
-            </p>
           </div>
 
           <aside
@@ -97,7 +93,11 @@ const ProductoId = () => {
                 Categoria: {producto?.categoria?.descripcion}
               </h2>
               <p className="leading-5 text-sm">{producto?.descripcion}</p>
-              <p>Precio: ${producto?.precio}</p>
+              {producto?.precio === 0 ? (
+                <p>Gratis!</p>
+              ) : (
+                <p>Precio: ${producto?.precio}</p>
+              )}
             </div>
 
             <div className="border-[1px] shadow-xl rounded-xl p-2 py-12 space-y-10">
@@ -105,17 +105,53 @@ const ProductoId = () => {
                 <img src="/tronix-logo.svg" alt="" />
               </div>
               <div className="space-y-10">
-                <h3 className="text-2xl font-light text-center">
-                  Esta leyendo una <br /> previsualizacion
-                </h3>
-                <div className="flex justify-center items-center">
-                  <button
-                    className="bg-primary text-white px-20 py-2 animate-bounce"
-                    onClick={handleCheckout}
-                  >
-                    Comprar PDF
-                  </button>
-                </div>
+                {producto?.precio !== 0 ? (
+                  <>
+                    {auth?.productos?.includes(producto?._id) ? (
+                      <>
+                        <h3 className="text-2xl font-light text-center">
+                          Ya compró este producto
+                        </h3>
+                        <div className="flex justify-center items-center">
+                          <Link
+                            to={`/mis-compras/${auth?.id}`}
+                            className="bg-primary text-white px-20 py-2 animate-bounce"
+                          >
+                            Ver PDF
+                          </Link>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <h3 className="text-2xl font-light text-center">
+                          Esta leyendo una <br /> previsualización
+                        </h3>
+                        <div className="flex justify-center items-center">
+                          <button
+                            // onClick={redirectCheckout}
+                            className="bg-primary text-white px-20 py-2 animate-bounce"
+                          >
+                            Comprar PDF
+                          </button>
+                        </div>
+                      </>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <h3 className="text-2xl font-light text-center">
+                      Tiene acceso total
+                    </h3>
+                    <div className="flex justify-center items-center">
+                      <Link
+                        to={"/productos"}
+                        className="bg-primary text-white px-20 py-2 animate-bounce"
+                      >
+                        Ver más PDFs
+                      </Link>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </aside>

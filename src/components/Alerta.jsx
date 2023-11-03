@@ -1,8 +1,7 @@
-import React from "react";
-
 const Alerta = ({ alerta }) => {
   return (
     <div
+      data-cy="alerta"
       className={`${
         alerta.error
           ? "from-red-400 to bg-red-600"

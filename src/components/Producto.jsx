@@ -7,7 +7,7 @@ const Producto = ({ producto }) => {
       key={producto._id}
       className="flex justify-between border-b-[1px] pb-6 group"
     >
-      <div className="w-[200px]">
+      <div className="w-[220px] h-[140px]">
         <img
           src={
             producto?.imagen?.secure_url
@@ -15,7 +15,7 @@ const Producto = ({ producto }) => {
               : "https://www.unir.net/wp-content/uploads/2020/06/ficha_1920x1080_02-1.png"
           }
           alt={producto.nombre}
-          className="group-hover:contrast-50"
+          className="group-hover:contrast-50 w-full h-full"
         />
       </div>
       <div className="w-8/12 flex flex-col justify-between">

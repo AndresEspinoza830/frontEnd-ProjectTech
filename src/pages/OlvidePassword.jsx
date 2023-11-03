@@ -59,6 +59,7 @@ const OlvidePassword = () => {
           <input
             id="email"
             type="email"
+            data-cy="email-input"
             placeholder="Email de Registro"
             className="w-full mt-2 p-3 border rounded-xl bg-gray-50"
             value={email}
@@ -68,14 +69,16 @@ const OlvidePassword = () => {
         <nav className="lg:flex lg:justify-between">
           <Link
             className="block text-center my-5 text-slate-500  text-sm"
-            to={"/login"}
+            data-cy="ingresar"
+            to={"/user/login"}
           >
             ¿Ya tienes una cuenta?{" "}
             <span className="text-[#0e59f2] font-bold">Inicia Sesion</span>
           </Link>
           <Link
             className="block text-center my-5 text-slate-500  text-sm"
-            to={"/registrar"}
+            data-cy="registrar-cuenta"
+            to={"/user/registrar"}
           >
             ¿No tienes cuenta?{" "}
             <span className="font-bold text-[#0e59f2]">Registrate</span>{" "}
@@ -83,6 +86,7 @@ const OlvidePassword = () => {
         </nav>
         <input
           type="submit"
+          data-cy="enviar-correo"
           value="Enviar Instrucciones"
           className="w-full bg-[#0e59f2] mb-5 text-white py-3 rounded-md uppercase font-bold cursor-pointer hover:bg-indigo-800 transition-colors duration-300"
         />

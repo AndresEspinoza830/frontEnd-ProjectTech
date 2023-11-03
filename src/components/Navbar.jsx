@@ -1,45 +1,25 @@
 import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineUserAdd } from "react-icons/ai";
 import { IoIosArrowDown } from "react-icons/io";
-import { BiLogIn } from "react-icons/bi";
-import { useContext, useEffect, useState } from "react";
-import AuthContext from "../hooks/useContext";
-import clienteAxios from "../config/clienteAxios";
+import { BiLogIn, BiLogOut } from "react-icons/bi";
+import useAuth from "../hooks/useAuth";
+import { useState } from "react";
+import Cookie from "js-cookie";
 
 const Navbar = () => {
   const [menu, setMenu] = useState(false);
 
+  const { auth, cerrarSesionAuth } = useAuth();
+
   const navigate = useNavigate();
-
-  //Atrpamos al usuairo en el context
-  const { usuario, setUsuario } = useContext(AuthContext);
-
-  // En tu componente principal o en un componente de alto nivel
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        // Realizar una solicitud al nuevo endpoint "/user" para cargar la información del usuario
-        const response = await clienteAxios.get("/user");
-        const { _id, username, email } = response.data;
-        console.log(response.data);
-
-        // Actualizar el estado del contexto con la información del usuario
-        setUsuario({
-          auth: true,
-          id: _id,
-          username,
-          email,
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    checkAuth();
-  }, []);
 
   const handleMenu = () => {
     setMenu(!menu);
+  };
+
+  const handleCerrarSesion = () => {
+    cerrarSesionAuth();
+    Cookie.remove("token");
   };
 
   return (
@@ -59,30 +39,46 @@ const Navbar = () => {
             <li className="cursor-pointer hover:text-primary transition-colors duration-300 flex items-center space-x-1">
               <a href="#about">Nosotros</a> <IoIosArrowDown className="mt-1" />
             </li>
-            <li className="cursor-pointer hover:text-primary transition-colors duration-300 flex items-center space-x-1">
+            <Link
+              to={"/productos"}
+              className="cursor-pointer hover:text-primary transition-colors duration-300 flex items-center space-x-1"
+            >
               <span>Servicios</span> <IoIosArrowDown className="mt-1" />
-            </li>
+            </Link>
             <li className="cursor-pointer hover:text-primary transition-colors duration-300 flex items-center space-x-1">
               <span>Contacto</span> <IoIosArrowDown className="mt-1" />
             </li>
           </ul>
         </nav>
         <div className="flex space-x-3">
-          {usuario.auth ? (
+          {auth.id ? (
             <div
-              className="flex items-center space-x-2 cursor-pointer relative"
+              className="flex items-center space-x-2 cursor-pointer relative w-[300px]"
               onClick={handleMenu}
             >
-              <p>{usuario.username}</p>
+              <p>{auth.username}</p>
               <div className="uppercase bg-primary w-[40px] h-[40px] rounded-full flex items-center justify-center shadow-primary text-white font-semibold text-xl">
-                {usuario.username.slice(0, 1)}
+                {auth.username.slice(0, 1)}
               </div>
               {menu && (
-                <div className="absolute w-full top-10 border-[1px] rounded-xl shadow-xl">
-                  <ul>
-                    <li className="px-8 py-4 ">{usuario.email}</li>
-                    <li className=" px-8 py-4 ">Mis Productos</li>
-                    <li className="  px-8 py-4">Cerrar Sesion</li>
+                <div className="absolute w-full top-10 border-[1px] rounded-xl shadow-xl bg-white z-10 overflow-hidden">
+                  <ul className="w-full text-center">
+                    <li className="px-8 py-4 font-semibold border-b-[1px]  cursor-default">
+                      {auth.email}
+                    </li>
+                    <Link
+                      to={`/mis-compras/${auth.id}`}
+                      className="block py-4 hover:bg-primary hover:text-white transition-all duration-300"
+                    >
+                      Mis Productos
+                    </Link>
+                    <button
+                      onClick={handleCerrarSesion}
+                      className="w-full  px-8 py-4 hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center space-x-3"
+                    >
+                      <BiLogOut value={{ style: { width: "200px" } }} />{" "}
+                      <span>Cerrar Sesion</span>
+                    </button>
                   </ul>
                 </div>
               )}
@@ -91,13 +87,13 @@ const Navbar = () => {
             <>
               <button
                 className="btn-primary flex items-center space-x-2"
-                onClick={() => navigate("/login")}
+                onClick={() => navigate("/user/login")}
               >
                 <BiLogIn /> <span>Iniciar Sesion</span>
               </button>
               <button
                 className="btn-primary flex items-center space-x-2"
-                onClick={() => navigate("/registrar")}
+                onClick={() => navigate("/user/registrar")}
               >
                 <AiOutlineUserAdd /> <span>Registrate</span>
               </button>

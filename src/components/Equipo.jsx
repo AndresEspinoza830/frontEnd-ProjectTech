@@ -1,5 +1,3 @@
-import React from "react";
-
 const Equipo = () => {
   return (
     <section className="w-full py-24">

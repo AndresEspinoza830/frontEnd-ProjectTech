@@ -1,12 +1,10 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdArrowBackIosNew, MdArrowForwardIos } from "react-icons/md";
 import Header from "../components/Header";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import productoAxios from "../config/productoAxios";
-import clienteAxios from "../config/clienteAxios";
-import AuthContext from "../hooks/useContext";
 import Categorias from "../components/Categorias";
 import Producto from "../components/Producto";
 import BuscadorProducto from "../components/BuscadorProducto";
@@ -34,31 +32,7 @@ const Productos = () => {
     setPaginaActual(nuevaPagina);
   };
 
-  const { setUsuario } = useContext(AuthContext);
-
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        // Realizar una solicitud al nuevo endpoint "/user" para cargar la información del usuario
-        const response = await clienteAxios.get("/user");
-        const { _id, username, email } = response.data;
-
-        // Actualizar el estado del contexto con la información del usuario
-        setUsuario({
-          auth: true,
-          id: _id,
-          username,
-          email,
-        });
-      } catch (error) {
-        navigate("/login");
-      }
-    };
-
-    checkAuth();
-  }, [navigate, setUsuario]);
 
   useEffect(() => {
     const consultarApi = async () => {

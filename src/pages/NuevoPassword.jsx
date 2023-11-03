@@ -82,7 +82,7 @@ const NuevoPassword = () => {
       {passwordModificado && (
         <Link
           className="block text-center my-5 text-slate-500  text-sm"
-          to={"/login"}
+          to={"/user/login"}
         >
           <span className="text-primary font-bold">Inicia Sesión</span>
         </Link>

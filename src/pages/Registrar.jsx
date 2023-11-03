@@ -65,7 +65,10 @@ const Registrar = () => {
 
   return (
     <>
-      <h1 className=" font-black text-5xl capitalize text-center">
+      <h1
+        className=" font-black text-5xl capitalize text-center"
+        data-cy="titulo-crear"
+      >
         Crea tu cuenta en <span className="text-[#0e59f2]">ProjectTech</span>{" "}
       </h1>
 
@@ -73,6 +76,7 @@ const Registrar = () => {
 
       <form
         className="my-10 bg-white p-10 py-5 rounded-lg shadow-xl"
+        data-cy="form-registrar"
         onSubmit={handleSubmit}
       >
         <div className="my-5">
@@ -85,6 +89,7 @@ const Registrar = () => {
           <input
             id="username"
             type="text"
+            data-cy="nombre-input"
             placeholder="Tu nombre"
             className="w-full mt-2 p-3 border rounded-xl bg-gray-50"
             onChange={(e) => setUsername(e.target.value)}
@@ -101,6 +106,7 @@ const Registrar = () => {
           <input
             id="email"
             type="email"
+            data-cy="email-input"
             placeholder="Email de Registro"
             className="w-full mt-2 p-3 border rounded-xl bg-gray-50"
             onChange={(e) => setEmail(e.target.value)}
@@ -117,6 +123,7 @@ const Registrar = () => {
           <input
             id="password"
             type="password"
+            data-cy="password-input"
             placeholder="Escribe tu password"
             className="w-full mt-2 p-3 border rounded-xl bg-gray-50"
             onChange={(e) => setPassword(e.target.value)}
@@ -133,6 +140,7 @@ const Registrar = () => {
           <input
             id="repetir-password"
             type="password"
+            data-cy="repetir-password-input"
             placeholder="Repite tu password"
             className="w-full mt-2 p-3 border rounded-xl bg-gray-50"
             onChange={(e) => setRepetirPassword(e.target.value)}
@@ -142,14 +150,16 @@ const Registrar = () => {
         <nav className="lg:flex lg:justify-between">
           <Link
             className="block text-center my-5 text-slate-500  text-sm"
-            to={"/login"}
+            data-cy="login"
+            to={"/user/login"}
           >
             ¿Ya tienes una cuenta?{" "}
             <span className="text-[#0e59f2] font-bold">Inicia Sesion</span>
           </Link>
           <Link
             className="block text-center my-5 text-slate-500  text-sm"
-            to={"/olvide-password"}
+            data-cy="olvide-password"
+            to={"/user/olvide-password"}
           >
             Olvide mi Password
           </Link>
@@ -157,6 +167,7 @@ const Registrar = () => {
         <input
           type="submit"
           value="Crear Cuenta"
+          data-cy="registrar-submit"
           className={
             "w-full bg-[#0e59f2] mb-5 disabled:cursor-not-allowed text-white py-3 rounded-md uppercase font-bold cursor-pointer hover:bg-indigo-800 transition-colors duration-300"
           }
