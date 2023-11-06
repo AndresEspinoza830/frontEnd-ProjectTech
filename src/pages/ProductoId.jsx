@@ -128,7 +128,7 @@ const ProductoId = () => {
                         </h3>
                         <div className="flex justify-center items-center">
                           <button
-                            // onClick={redirectCheckout}
+                            onClick={redirectCheckout}
                             className="bg-primary text-white px-20 py-2 animate-bounce"
                           >
                             Comprar PDF

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Document, Page, pdfjs } from "react-pdf";
 import { IoCloseSharp } from "react-icons/io5";
+import { ImFilePdf } from "react-icons/im";
+
 import clienteAxios from "../config/clienteAxios";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
@@ -32,7 +34,7 @@ const MisCompras = () => {
     consultarProductos();
   }, []);
 
-  const pdfUrl = "http://localhost:5173/public/pdf/backup2.pdf";
+  // const pdfUrl = "http://localhost:5173/public/pdf/backup2.pdf";
 
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
@@ -44,12 +46,14 @@ const MisCompras = () => {
     setMostrarIns(pdf);
   };
 
+  if (!productos.length) return "No exiten productos comprados.";
+
   return (
-    <div className="bg-white relative h-screen">
+    <div className="bg-white relative  ">
       <Header />
       <Navbar />
       {mostrarIns !== "" && (
-        <div className="w-full h-auto py-4 flex flex-col items-center  absolute  mx-auto top-0 bg-black/80">
+        <div className="w-full h-auto py-4 flex flex-col items-center  absolute  mx-auto top-0 bg-black/80 backdrop-blur-sm">
           <IoCloseSharp
             className=" bg-white w-[30px] h-[30px] self-end mr-56 p-2 rounded-full cursor-pointer"
             onClick={() => setMostrarIns("")}
@@ -74,34 +78,52 @@ const MisCompras = () => {
         </div>
       )}
 
-      <div className="w-full">
-        <div className="w-full max-w-[1240px] mx-auto flex space-x-4 ">
-          <table>
-            <thead>
-              <th>Instructivo</th>
-              <th>Nombre</th>
-              <th>Precio</th>
-              <th>PDF</th>
+      <div className="w-full min-h-screen">
+        <div className="w-full max-w-[1240px] mx-auto px-2">
+          <table className="min-w-full text-left text-sm font-light ">
+            <thead className="border-b font-medium dark:border-neutral-500">
+              <tr className="text-base">
+                <th scope="col" className="px-6 py-4">
+                  Instructivo
+                </th>
+                <th scope="col" className="px-6 py-4">
+                  Nombre
+                </th>
+                <th scope="col" className="px-6 py-4">
+                  Precio
+                </th>
+                <th scope="col" className="px-6 py-4">
+                  PDF
+                </th>
+              </tr>
             </thead>
             <tbody>
               {productos &&
                 productos.map((producto) => (
-                  <tr key={producto._id}>
-                    <td>
+                  <tr
+                    key={producto._id}
+                    className="border-b dark:border-neutral-500 text-base"
+                  >
+                    <td className="whitespace-nowrap px-6 py-4">
                       <img
                         src={producto?.imagen?.secure_url}
                         alt={producto?.nombre}
                         width={200}
                       />
                     </td>
-                    <td>{producto?.nombre}</td>
-                    <td>{producto?.precio}</td>
+                    <td className="whitespace-nowrap px-6 py-4">
+                      {producto?.nombre}
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4">
+                      $ {producto?.precio}
+                    </td>
                     <td>
                       <button
-                        className="btn-primary"
+                        className="btn-primary flex items-center space-x-2"
                         onClick={() => verificarPDF(producto?.pdf?.normal)}
                       >
-                        Visualizar
+                        <ImFilePdf />
+                        <span>Visualizar</span>
                       </button>
                     </td>
                   </tr>
