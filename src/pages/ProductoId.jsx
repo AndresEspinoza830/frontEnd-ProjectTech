@@ -64,8 +64,10 @@ const ProductoId = () => {
             <Document
               file={
                 producto?.precio === 0
-                  ? `${import.meta.VITE_BACKEND_URL}/${producto?.pdf?.normal}`
-                  : `${import.meta.VITE_BACKEND_URL}/${producto?.pdf?.blur}`
+                  ? `${import.meta.env.VITE_BACKEND_URL}/${
+                      producto?.pdf?.normal
+                    }`
+                  : `${import.meta.env.VITE_BACKEND_URL}/${producto?.pdf?.blur}`
               }
               onLoadSuccess={onDocumentLoadSuccess}
               pageMode="useThumbs"

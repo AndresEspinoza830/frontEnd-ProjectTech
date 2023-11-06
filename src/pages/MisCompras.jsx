@@ -59,7 +59,7 @@ const MisCompras = () => {
             onClick={() => setMostrarIns("")}
           />
           <Document
-            file={`${import.meta.VITE_BACKEND_URL}/${mostrarIns}`}
+            file={`${import.meta.env.VITE_BACKEND_URL}/${mostrarIns}`}
             onLoadSuccess={onDocumentLoadSuccess}
             pageMode="useThumbs"
             className=""
