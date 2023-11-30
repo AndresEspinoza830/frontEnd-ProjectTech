@@ -17,6 +17,7 @@ const ProductoId = () => {
 
   const { auth } = useAuth();
   console.log(auth);
+  console.log(producto);
 
   useEffect(() => {
     const consultarProducto = async () => {
