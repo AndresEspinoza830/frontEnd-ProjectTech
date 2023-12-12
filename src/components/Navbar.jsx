@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineUserAdd } from "react-icons/ai";
 import { IoIosArrowDown } from "react-icons/io";
 import { BiLogIn, BiLogOut } from "react-icons/bi";
+import Fade from "react-reveal/Fade";
 import useAuth from "../hooks/useAuth";
 import { useState } from "react";
 import Cookie from "js-cookie";
@@ -25,9 +26,12 @@ const Navbar = () => {
   return (
     <div className="max-w-[1240px] mx-auto py-10 ">
       <div className="w-full h-full flex items-center justify-between ">
-        <Link to={"/home"}>
-          <img src="/tronix-logo.svg" alt="Logo" className="w-[150px] " />
-        </Link>
+        <Fade left>
+          <Link to={"/home"}>
+            <img src="/tronix-logo.svg" alt="Logo" className="w-[150px] " />
+          </Link>
+        </Fade>
+
         <nav>
           <ul className="flex space-x-12 font-semibold text-base text-black ">
             <Link

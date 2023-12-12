@@ -95,6 +95,9 @@ const ProductoId = () => {
               <h2 className="font-medium text-lg">
                 Categoria: {producto?.categoria?.descripcion}
               </h2>
+              <h4 className="text-base">
+                Ultima actualizacion: {formatFecha(producto?.updatedAt)}
+              </h4>
               <p className="leading-5 text-sm">{producto?.descripcion}</p>
               {producto?.precio === 0 ? (
                 <p>Gratis!</p>
@@ -164,6 +167,13 @@ const ProductoId = () => {
       <Footer />
     </div>
   );
+};
+
+const formatFecha = (fecha) => {
+  if (!fecha) return ""; // Manejar el caso si la fecha no está definida
+
+  const options = { day: "numeric", month: "numeric", year: "numeric" };
+  return new Date(fecha).toLocaleDateString("es-ES", options);
 };
 
 export default ProductoId;

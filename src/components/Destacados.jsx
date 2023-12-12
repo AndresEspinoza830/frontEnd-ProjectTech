@@ -2,11 +2,10 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
 import Destacado from "./Destacado";
+import Fade from "react-reveal/Fade";
+import Bounce from "react-reveal/Bounce";
+
 import productoAxios from "../config/productoAxios";
-import destacado1 from "../../public/destacado1.png";
-import destacado2 from "../../public/destacado2.png";
-import destacado3 from "../../public/destacado3.png";
-import destacado4 from "../../public/destacado4.png";
 
 const Destacados = () => {
   const [productos, setProductos] = useState([]);
@@ -42,21 +41,27 @@ const Destacados = () => {
             obortis <br /> ligula euismod sededesty am augue nisl.
           </p>
         </div>
-        <div className="flex items-center justify-between mb-10">
-          {productos &&
-            productos.map((ser, index) => (
-              <Destacado ser={ser} index={index} key={ser._id} />
-            ))}
-        </div>
-        <div className="w-full flex items-center justify-center">
-          <button
-            onClick={() => navigate("/productos")}
-            className="btn-primary flex items-center space-x-2"
-          >
-            {" "}
-            <span>Nuestros Productos</span> <IoIosArrowForward />
-          </button>
-        </div>
+
+        <Fade bottom>
+          <div className="flex items-center justify-between mb-10">
+            {productos &&
+              productos.map((ser, index) => (
+                <Destacado ser={ser} index={index} key={ser._id} />
+              ))}
+          </div>
+        </Fade>
+
+        <Bounce right>
+          <div className="w-full flex items-center justify-center">
+            <button
+              onClick={() => navigate("/productos")}
+              className="btn-primary flex items-center space-x-2"
+            >
+              {" "}
+              <span>Nuestros Productos</span> <IoIosArrowForward />
+            </button>
+          </div>
+        </Bounce>
       </div>
     </main>
   );
